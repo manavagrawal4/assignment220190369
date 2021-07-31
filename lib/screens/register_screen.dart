@@ -1,7 +1,11 @@
 //import 'package:assignment220190369/screens/login_screen.dart';
-import 'package:assignment220190369/screens/welcome_screen.dart';
+import 'package:assignment220190369/providers/user_data.dart';
+import 'package:assignment220190369/screens/home_screen.dart';
+
+import 'package:assignment220190369/widgets/button_widget.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class RegisterScreen extends StatefulWidget {
   static const routeName = '/register-screen';
@@ -19,6 +23,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   var userPassword = '';
   var regularUpdateToggle = false;
   var bitsId = '';
+  var fullName = '';
   var excitementLevel = ExcitementLevel.excited;
   final _formKey = GlobalKey<FormState>();
   @override
@@ -36,21 +41,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                // Container(
-                //   child: Center(
-                //     child: Text(
-                //       'CRUX FLUTTER SUMMER GROUP',
-                //       style: TextStyle(
-                //         color: Colors.white,
-                //         fontSize: 20,
-                //         fontWeight: FontWeight.w500,
-                //       ),
-                //     ),
-                //   ),
-                //   height: 60,
-                //   width: double.infinity,
-                //   color: Theme.of(context).primaryColor,
-                // ),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -89,12 +79,41 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     Padding(
                       padding: const EdgeInsets.symmetric(vertical: 5),
                       child: Text(
+                        'Full Name',
+                        style: TextStyle(
+                            fontSize: 20, fontWeight: FontWeight.w400),
+                      ),
+                    ),
+                    TextFormField(
+                      validator: (val) {
+                        if (val!.isEmpty) return 'Please provide Full Name';
+                      },
+                      onSaved: (val) => fullName = val!,
+                      style: TextStyle(
+                        fontSize: 20,
+                      ),
+                      decoration: InputDecoration(
+                        fillColor: Colors.grey.shade200,
+                        filled: true,
+                        hintText: 'Please enter your Full Name ',
+                        border: InputBorder.none,
+                      ),
+                    ),
+                  ],
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 5),
+                      child: Text(
                         'Password',
                         style: TextStyle(
                             fontSize: 20, fontWeight: FontWeight.w400),
                       ),
                     ),
                     TextFormField(
+                      obscureText: true,
                       style: TextStyle(
                         fontSize: 20,
                       ),
@@ -152,28 +171,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         border: InputBorder.none,
                       ),
                     ),
-
-                    // Row(
-                    //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    //   children: [
-                    //     Text(
-                    //       'Receive Regular Updates',
-                    //       style:
-                    //           TextStyle(fontSize: 20, fontWeight: FontWeight.w400),
-                    //     ),
-                    //     Switch(
-                    //       value: regularUpdateToggle,
-                    //       onChanged: (value) {
-                    //         setState(() {
-                    //           regularUpdateToggle = value;
-                    //         });
-                    //       },
-                    //     ),
-                    //   ],
-                    // ),
                   ],
                 ),
-
                 SwitchListTile(
                   contentPadding: EdgeInsets.zero,
                   title: Text(
@@ -230,31 +229,41 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 ),
                 SizedBox(
                   width: double.infinity,
-                  child: ElevatedButton(
-                      onPressed: () {
+                  child: ButtonWidget(
+                      title: 'REGISTER',
+                      onButtonPressed: () async {
                         if (!_formKey.currentState!.validate()) return;
                         _formKey.currentState!.save();
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (ctx) => WelcomeScreen(
-                                      id: bitsId,
-                                    )));
-                      },
-                      child: Padding(
-                        padding: const EdgeInsets.all(15.0),
-                        child: Text(
-                          'REGISTER',
-                          style: TextStyle(
-                            fontSize: 20,
-                          ),
-                        ),
-                      ),
-                      style: ElevatedButton.styleFrom(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10.0),
-                          ),
-                          primary: Theme.of(context).primaryColor)),
+                        await Provider.of<UserData>(context, listen: false)
+                            .signUp(bitsId, fullName)
+                            .then((value) => null);
+                        Navigator.pushReplacementNamed(
+                            context, HomeScreen.routeName);
+                      }),
+                  // ElevatedButton(
+                  //     onPressed: () {
+                  //       if (!_formKey.currentState!.validate()) return;
+                  //       _formKey.currentState!.save();
+                  //       final provider =
+                  //           Provider.of<UserData>(context, listen: false);
+                  //       provider.setId(bitsId);
+                  //       provider.setName(fullName);
+                  //       Navigator.pushNamed(context, HomeScreen.routeName);
+                  //     },
+                  //     child: Padding(
+                  //       padding: const EdgeInsets.all(15.0),
+                  //       child: Text(
+                  //         'REGISTER',
+                  //         style: TextStyle(
+                  //           fontSize: 20,
+                  //         ),
+                  //       ),
+                  //     ),
+                  //     style: ElevatedButton.styleFrom(
+                  //         shape: RoundedRectangleBorder(
+                  //           borderRadius: BorderRadius.circular(10.0),
+                  //         ),
+                  //         primary: Theme.of(context).primaryColor)),
                 ),
                 RichText(
                   text: TextSpan(

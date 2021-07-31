@@ -1,5 +1,6 @@
 import 'package:assignment220190369/screens/register_screen.dart';
 import 'package:assignment220190369/screens/welcome_screen.dart';
+import 'package:assignment220190369/widgets/button_widget.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
@@ -127,33 +128,19 @@ class _LoginScreenState extends State<LoginScreen> {
                         ],
                       ),
                       SizedBox(
-                        width: double.infinity,
-                        child: ElevatedButton(
-                            onPressed: () {
-                              if (!_formKey.currentState!.validate()) return;
-                              _formKey.currentState!.save();
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (ctx) => WelcomeScreen(
-                                            id: userData['ID'],
-                                          )));
-                            },
-                            child: Padding(
-                              padding: EdgeInsets.all(15),
-                              child: Text(
-                                'LOG IN',
-                                style: TextStyle(
-                                  fontSize: 20,
-                                ),
-                              ),
-                            ),
-                            style: ElevatedButton.styleFrom(
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(10.0),
-                                ),
-                                primary: Theme.of(context).primaryColor)),
-                      ),
+                          width: double.infinity,
+                          child: ButtonWidget(
+                              title: 'LOG IN',
+                              onButtonPressed: () {
+                                if (!_formKey.currentState!.validate()) return;
+                                _formKey.currentState!.save();
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (ctx) => WelcomeScreen(
+                                              id: userData['ID'],
+                                            )));
+                              })),
                       Center(
                         child: TextButton(
                             onPressed: () {},

@@ -13,13 +13,13 @@ class WelcomeScreen extends StatelessWidget {
     return Scaffold(
       body: Center(
         child: Container(
-          margin: EdgeInsets.symmetric(vertical: 200),
+          margin: EdgeInsets.symmetric(vertical: 200, horizontal: 20),
           child: Column(
-            //crossAxisAlignment: CrossAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               Column(
-                //crossAxisAlignment: CrossAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
@@ -59,6 +59,16 @@ class WelcomeScreen extends StatelessWidget {
                 style: TextStyle(
                   //fontWeight: FontWeight.bold,
                   fontSize: 25,
+                ),
+              ),
+              FittedBox(
+                fit: BoxFit.contain,
+                child: Text(
+                  'New Home feature is implemented when you Register',
+                  style: TextStyle(
+                    //fontWeight: FontWeight.bold,
+                    fontSize: 25,
+                  ),
                 ),
               ),
             ],
